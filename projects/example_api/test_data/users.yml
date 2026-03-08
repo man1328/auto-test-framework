@@ -1,0 +1,20 @@
+# Test data for API user tests (data-driven)
+
+new_users:
+  - name: "Alice Johnson"
+    username: "alice_j"
+    email: "alice@example.com"
+    phone: "555-0101"
+    website: "alice.dev"
+
+  - name: "Bob Smith"
+    username: "bob_smith"
+    email: "bob@example.com"
+    phone: "555-0102"
+    website: "bob.io"
+
+  - name: "Carol White"
+    username: "carol_w"
+    email: "carol@example.com"
+    phone: "555-0103"
+    website: "carol.com"

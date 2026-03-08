@@ -1,0 +1,83 @@
+# ─────────────────────────────────────────────────────────────────
+#  Automation Test Framework — Docker Compose
+#
+#  Services:
+#    framework   — test runner (API, Web, smoke etc.)
+#    allure      — live Allure report server (always on)
+#
+#  Usage:
+#    docker compose run --rm framework api        # Run API tests
+#    docker compose run --rm framework smoke      # Run smoke suite
+#    docker compose run --rm framework android    # Run Android tests
+#    docker compose up allure                     # Start live report server
+# ─────────────────────────────────────────────────────────────────
+
+services:
+
+  # ── Main test runner ────────────────────────────────────────────
+  framework:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: automation-framework:latest
+    container_name: automation_runner
+    volumes:
+      # Mount reports so you can open them on your host machine
+      - ./reports:/framework/reports
+      - ./logs:/framework/logs
+      # Mount projects so you can edit tests without rebuilding
+      - ./projects:/framework/projects
+    environment:
+      # ── Override any of these in a .env file or here ────────────
+      BROWSER: chrome
+      HEADLESS: "true"
+      API_BASE_URL: ${API_BASE_URL:-https://jsonplaceholder.typicode.com}
+      API_TOKEN: ${API_TOKEN:-}
+      BASE_URL: ${BASE_URL:-https://example.com}
+      # Android: Appium server runs on the HOST, accessible via special DNS
+      APPIUM_SERVER_URL: http://host.docker.internal:4723
+      ANDROID_DEVICE_NAME: ${ANDROID_DEVICE_NAME:-emulator-5554}
+      ANDROID_PLATFORM_VERSION: ${ANDROID_PLATFORM_VERSION:-13}
+      ANDROID_APP_PACKAGE: ${ANDROID_APP_PACKAGE:-}
+      ANDROID_APP_ACTIVITY: ${ANDROID_APP_ACTIVITY:-}
+    # Allow container to connect back to host (for Appium)
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    # Shm size prevents Chrome from crashing in Docker
+    shm_size: "2gb"
+    # Don't restart automatically — run once and exit
+    restart: "no"
+    command: ["api"]   # default, override with: docker compose run framework smoke
+
+  # ── Live Allure report server ───────────────────────────────────
+  allure:
+    image: frankescobar/allure-docker-service:latest
+    container_name: allure_report_server
+    volumes:
+      - ./reports/allure-results:/app/allure-results
+      - ./reports/allure-html:/app/default-reports
+    ports:
+      - "5050:5050"   # Allure UI  → open http://localhost:5050
+    environment:
+      CHECK_RESULTS_EVERY_SECONDS: 5   # auto-refresh when new results arrive
+      KEEP_HISTORY: "1"
+    restart: unless-stopped
+
+  # ── Jenkins (optional, for CI/CD) ──────────────────────────────
+  jenkins:
+    image: jenkins/jenkins:lts-jdk17
+    container_name: jenkins_ci
+    ports:
+      - "8080:8080"   # Jenkins UI → open http://localhost:8080
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock   # Let Jenkins run Docker
+    environment:
+      JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"
+    restart: unless-stopped
+    profiles:
+      - jenkins   # Only start with: docker compose --profile jenkins up
+
+volumes:
+  jenkins_home:

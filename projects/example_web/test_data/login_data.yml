@@ -1,0 +1,9 @@
+# Test data for web login tests
+
+valid:
+  email: "admin@example.com"
+  password: "SecurePass123"
+
+admin:
+  email: "admin@example.com"
+  password: "AdminPass456"

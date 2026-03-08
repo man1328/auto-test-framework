@@ -1,0 +1,28 @@
+# ─── Test Runner ──────────────────────────────────────────────────────────────
+pytest>=8.0.0
+pytest-html>=4.1.0
+pytest-xdist>=3.5.0          # parallel test execution
+pytest-rerunfailures>=14.0   # retry flaky tests
+pytest-ordering>=0.6         # control test order
+
+# ─── Reporting ────────────────────────────────────────────────────────────────
+allure-pytest>=2.13.0
+lxml>=5.1.0                  # needed for JUnit XML
+
+# ─── Mobile (Android / iOS) ───────────────────────────────────────────────────
+Appium-Python-Client>=3.1.0
+selenium>=4.18.0             # Appium 2 depends on selenium 4
+
+# ─── Web Automation ───────────────────────────────────────────────────────────
+webdriver-manager>=4.0.1     # auto-downloads ChromeDriver/GeckoDriver
+
+# ─── API / HTTP ───────────────────────────────────────────────────────────────
+requests>=2.31.0
+urllib3>=2.2.0
+
+# ─── Config / Utilities ───────────────────────────────────────────────────────
+python-dotenv>=1.0.0
+PyYAML>=6.0.1
+Jinja2>=3.1.3                # CLI code-generator templates
+colorlog>=6.8.2              # colored console logging
+rich>=13.7.0                 # pretty CLI output for the generator

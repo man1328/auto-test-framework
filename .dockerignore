@@ -1,0 +1,64 @@
+# --- General & OS ---
+.git
+.gitignore
+.dockerignore
+Dockerfile
+docker-compose.yml
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+
+# --- Node.js (Appium 2 / Tooling) ---
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# --- Python (Test Scripts) ---
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.tox/
+.nox/
+.coverage
+.cache
+venv/
+ENV/
+.env
+
+# --- Java 17 (Maven/Gradle) ---
+target/
+build/
+.gradle/
+.mvn/
+*.class
+*.jar
+*.war
+*.nar
+*.ear
+# Do not ignore the wrapper if you need it for the build
+# !gradle-wrapper.jar
+# !maven-wrapper.jar
+
+# --- Allure Framework ---
+allure-results/
+allure-report/
+.allure/
+
+# --- Appium & Mobile Testing ---
+# Exclude large app files unless explicitly needed in the image
+*.apk
+*.ipa
+*.app
+screenshots/
+videos/
+
+# --- Jenkins & CI/CD ---
+.jenkins/
+*.jpi
+*.hpi
+# Ignore Jenkins workspace metadata
+workspace/

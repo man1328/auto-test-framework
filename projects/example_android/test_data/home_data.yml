@@ -1,0 +1,16 @@
+# Test data for Android HomeScreen tests
+# Used by parametrized tests via pytest.mark.parametrize or conftest fixtures
+
+search_queries:
+  - query: "Python"
+    expected_results: true
+  - query: "Automation"
+    expected_results: true
+  - query: "xyzzy_nonexistent_12345"
+    expected_results: false
+
+welcome_messages:
+  - locale: "en"
+    expected_text: "Welcome"
+  - locale: "es"
+    expected_text: "Bienvenido"

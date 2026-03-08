@@ -1,0 +1,31 @@
+"""
+{{ test_class_name }} — API Test
+Project: {{ project_name }}
+Endpoint base: {{ base_url }}
+Run: pytest projects/{{ project_name }}/tests/ -m api -v
+"""
+import pytest
+import allure
+
+from core.base_api_test import BaseAPITest
+
+
+@allure.suite("API — {{ project_name | title }}")
+@allure.feature("{{ feature_name }}")
+@pytest.mark.api
+class {{ test_class_name }}(BaseAPITest):
+    """{{ docstring }}"""
+
+{% for method in test_methods %}
+    @allure.title("{{ method.title }}")
+    @allure.severity(allure.severity_level.{{ method.severity | upper }})
+    @pytest.mark.{{ method.marker }}
+    def {{ method.name }}(self):
+        """{{ method.docstring }}"""
+        # TODO: implement test logic
+        # Example:
+        # resp = self.get("/endpoint")
+        # self.assert_status(resp, 200)
+        raise NotImplementedError("Implement this test")
+
+{% endfor %}

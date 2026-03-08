@@ -1,0 +1,31 @@
+"""
+{{ test_class_name }} — Web/Selenium Test
+Project: {{ project_name }}
+Page: {{ page_class_name }}
+Run: pytest projects/{{ project_name }}/tests/ -m web -v
+"""
+import pytest
+import allure
+
+from core.base_web_test import BaseWebTest
+from projects.{{ project_name }}.pages.{{ page_module }} import {{ page_class_name }}
+
+
+@allure.suite("Web — {{ project_name | title }}")
+@allure.feature("{{ feature_name }}")
+@pytest.mark.web
+class {{ test_class_name }}(BaseWebTest):
+    """{{ docstring }}"""
+
+{% for method in test_methods %}
+    @allure.title("{{ method.title }}")
+    @allure.severity(allure.severity_level.{{ method.severity | upper }})
+    @pytest.mark.{{ method.marker }}
+    def {{ method.name }}(self):
+        """{{ method.docstring }}"""
+        self.navigate("{{ page_url }}")
+        page = {{ page_class_name }}(self.driver)
+        # TODO: implement test logic
+        raise NotImplementedError("Implement this test")
+
+{% endfor %}
